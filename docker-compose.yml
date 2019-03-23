@@ -6,4 +6,5 @@ services:
     volumes:
       - "./ansible/ssh-config:/home/runner/.ssh/config"
       - "./ansible:/home/runner/ansible"
-      - "./config/inventory.yml:/home/runner/ansible/inventory.yml"
+      - "./config/hosts.yml:/home/runner/ansible/hosts.yml"
+      - "./config/keys:/home/runner/ansible/keys"
