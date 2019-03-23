@@ -10,3 +10,6 @@ setup:
 
 harden:
 	ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook harden.yml
+
+fix-key-permission:
+	chmod 0600 ./keys/id_ed25519
