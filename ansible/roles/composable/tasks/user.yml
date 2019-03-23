@@ -9,9 +9,4 @@
   when: runner_created is success
   authorized_key:
     user=runner
-    key="{{ runner_public_key }}"
-
-- name: Setup ssh key for root
-  authorized_key:
-    user=root
-    key="{{ root_public_key }}"
+    key="{{ lookup('file','./keys/id_ed25519.pub') }}"

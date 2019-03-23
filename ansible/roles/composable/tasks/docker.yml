@@ -1,6 +1,5 @@
 ---
 - name: Install docker dependencies
-  when: aptitude_installed is success
   apt:
     name: "{{ packages }}"
     update_cache: yes
@@ -33,7 +32,6 @@
 
 - name: Install docker
   when:
-  - aptitude_installed is success
   - docker_repository_readied is success
   apt:
     name: "{{ packages }}"
@@ -60,8 +58,7 @@
     name: docker
     enabled: yes
 
-- name: Install PIP
-  when: aptitude_installed is success
+- name: Install pip
   apt:
     name: "{{ packages }}"
   vars:

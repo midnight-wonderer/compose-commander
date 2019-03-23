@@ -5,11 +5,11 @@ SHELL=/usr/bin/env bash
 ping:
 	ANSIBLE_HOST_KEY_CHECKING=false ansible uninitialized -m ping --extra-vars "ansible_python_interpreter=\"/usr/bin/env python3\""
 
-setup:
-	ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook setup.yml
-
 harden:
 	ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook harden.yml
+
+composable:
+	ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook composable.yml
 
 fix-key-permission:
 	chmod 0600 ./keys/id_ed25519

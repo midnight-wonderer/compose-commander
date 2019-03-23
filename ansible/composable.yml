@@ -1,0 +1,8 @@
+---
+- name: configure docker compose
+  hosts: worker
+  roles:
+    - composable
+  strategy: free
+  vars:
+    ansible_python_interpreter: "/usr/bin/env python3"
