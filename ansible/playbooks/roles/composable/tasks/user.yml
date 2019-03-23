@@ -1,0 +1,17 @@
+---
+- name: Create runner user
+  user:
+    name: runner
+    shell: /usr/bin/env bash
+  register: runner_created
+
+- name: Setup ssh key for runner
+  when: runner_created is success
+  authorized_key:
+    user=runner
+    key="{{ runner_public_key }}"
+
+- name: Setup ssh key for root
+  authorized_key:
+    user=root
+    key="{{ root_public_key }}"

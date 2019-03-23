@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  ansible:
+    build: ./ansible
+    volumes:
+      - "./ansible/hosts:/etc/ansible/hosts"
+      - "./ansible/ssh-config:/home/runner/.ssh/config"
+      - "./ansible/Makefile:/home/runner/Makefile"
+      - "./ansible/playbooks:/home/runner/playbooks"

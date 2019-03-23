@@ -1,0 +1,27 @@
+---
+- name: Upgrade all packages to the latest version
+  when: docker_compose_installed is success
+  apt:
+    name: "*"
+    state: latest
+  register: package_upgraded
+
+- name: Disable password SSH
+  when: package_upgraded is success
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    regexp="^\s*(?:#\s*)?(PasswordAuthentication\s+)(?:yes|no)\s*$"
+    backrefs=yes
+    line="\1no"
+  register: ssh_password_disabled
+
+- name: Reload SSH daemon
+  when: ssh_password_disabled.changed
+  service:
+    name=sshd
+    state=reloaded
+
+- name: Reboot the machine
+  when: ssh_password_disabled.changed
+  reboot:
+    reboot_timeout: 3

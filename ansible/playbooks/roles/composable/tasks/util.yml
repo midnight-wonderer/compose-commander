@@ -1,0 +1,8 @@
+---
+- name: Install aptitude
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - aptitude
+  register: aptitude_installed

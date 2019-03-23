@@ -1,0 +1,77 @@
+---
+- name: Install docker dependencies
+  when: aptitude_installed is success
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg-agent
+    - software-properties-common
+  register: docker_dependencies_installed
+
+- name: Fetch docker release signing key
+  apt_key:
+    id: 0EBFCD88
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+  register: docker_key_readied
+
+- name: Add docker repository
+  when: docker_key_readied is success
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable"
+    state: present
+  register: docker_repository_readied
+
+- name: Install docker
+  when:
+  - aptitude_installed is success
+  - docker_repository_readied is success
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+  register: docker_installed
+
+- name: Allow runner to access docker
+  when:
+  - runner_created is success
+  - docker_installed is success
+  user:
+    name: runner
+    groups: docker
+    append: yes
+
+- name: Enable docker service
+  when: docker_installed is success
+  systemd:
+    name: docker
+    enabled: yes
+
+- name: Install PIP
+  when: aptitude_installed is success
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - python3-pip
+    - python3-setuptools
+  register: pip_installed
+
+- name: Setup docker-compose
+  when:
+  - pip_installed is success
+  - docker_installed is success
+  pip:
+    name: docker-compose
+  become: yes
+  become_user: runner
+  register: docker_compose_installed
