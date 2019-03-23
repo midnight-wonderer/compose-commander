@@ -1,0 +1,14 @@
+---
+ungrouped:
+
+uninitialized:
+  unnamed_server_1:
+    ansible_host: 192.168.20.1
+    ansible_user: root
+    ansible_password: "[password]"
+
+keyed:
+  application_1:
+    ansible_host: 192.168.20.1
+    ansible_user: root
+    ansible_ssh_private_key_file: "./keys/id_ed25519"
