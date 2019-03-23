@@ -1,0 +1,14 @@
+---
+- name: Setup ssh key for root
+  authorized_key:
+    user=root
+    key="{{ lookup('env','ROOT_PUBLIC_KEY') }}"
+
+- name: Disable password SSH
+  when: package_upgraded is success
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    regexp="^\s*(?:#\s*)?(PasswordAuthentication\s+)(?:yes|no)\s*$"
+    backrefs=yes
+    line="\1no"
+  register: ssh_password_disabled

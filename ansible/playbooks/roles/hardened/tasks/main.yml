@@ -1,0 +1,4 @@
+---
+- include: software-update.yml
+- include: ssh-hardening.yml
+- include: finalize.yml

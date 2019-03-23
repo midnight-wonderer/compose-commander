@@ -1,0 +1,15 @@
+---
+- name: Install aptitude
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - aptitude
+  register: aptitude_installed
+
+- name: Upgrade all packages to the latest version
+  when: aptitude_installed is success
+  apt:
+    name: "*"
+    state: latest
+  register: package_upgraded

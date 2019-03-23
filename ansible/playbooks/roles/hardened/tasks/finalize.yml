@@ -1,0 +1,5 @@
+---
+- name: Reboot the machine
+  when: ssh_password_disabled.changed or package_upgraded.changed
+  reboot:
+    reboot_timeout: 3

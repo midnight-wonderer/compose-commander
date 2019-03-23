@@ -1,3 +1,4 @@
+# StrictHostKeyChecking=no
 # after ssh 7.6: StrictHostKeyChecking=accept-new
 Host *
     ServerAliveInterval 50
