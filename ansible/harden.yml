@@ -5,3 +5,5 @@
     - hardened
   vars:
     ansible_python_interpreter: "/usr/bin/env python3"
+  become: yes
+  become_user: root
