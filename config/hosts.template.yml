@@ -1,14 +1,30 @@
 all:
+  hosts:
+    _components:
+      _hosts:
+        host_1: &host_1
+          ansible_host: 192.168.0.1
+      _credentials:
+        root_key: &root_key
+          ansible_user: root
+          ansible_ssh_private_key_file: "./keys/id_ed25519"
+        runner_key: &runner_key
+          ansible_user: runner
+          ansible_ssh_private_key_file: "./keys/id_ed25519"
   children:
     uninitialized:
       hosts:
-        unnamed_1:
-          ansible_host: 192.168.20.1
+        uninitialized_1:
+          <<: *host_1
           ansible_user: root
           ansible_password: "[password]"
     worker:
       hosts:
-        application_1:
-          ansible_host: 192.168.20.1
-          ansible_user: root
-          ansible_ssh_private_key_file: "./keys/id_ed25519"
+        worker_1:
+          <<: *host_1
+          <<: *root_key
+    deployable:
+      hosts:
+        deployable_1:
+          <<: *host_1
+          <<: *runner_key
