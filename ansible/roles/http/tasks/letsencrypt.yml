@@ -1,0 +1,22 @@
+---
+# https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx
+- name: Add certbot repository
+  apt_repository:
+    repo: "{{ item }}"
+  loop:
+    - ppa:certbot/certbot
+    - "deb http://archive.ubuntu.com/ubuntu/ {{ansible_distribution_release}} universe"
+    - "deb http://archive.ubuntu.com/ubuntu/ {{ansible_distribution_release}}-updates universe"
+    - "deb http://security.ubuntu.com/ubuntu/ {{ansible_distribution_release}}-security universe"
+  register: certbot_repository_readied
+
+- name: Install certbot for nginx
+  when: certbot_repository_readied is success
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+      - software-properties-common
+      - certbot
+      - python-certbot-nginx

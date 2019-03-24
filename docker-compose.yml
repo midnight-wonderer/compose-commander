@@ -8,3 +8,4 @@ services:
       - "./ansible:/home/runner/ansible"
       - "./config/hosts.yml:/home/runner/ansible/hosts.yml"
       - "./config/keys:/home/runner/ansible/keys"
+      - "./config/nginx.conf.d:/home/runner/ansible/nginx.conf.d"

@@ -1,0 +1,32 @@
+---
+- name: Fetch nginx release signing key
+  apt_key:
+    url: https://nginx.org/keys/nginx_signing.key
+    state: present
+  register: nginx_key_readied
+
+- name: Add nginx repository
+  when: nginx_key_readied is success
+  apt_repository:
+    repo: "deb http://nginx.org/packages/ubuntu/ {{ansible_distribution_release}} nginx"
+    state: present
+  register: nginx_repository_readied
+
+- name: Install nginx
+  when:
+    - nginx_repository_readied is success
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+      - nginx
+
+- name: Configure nginx server
+  copy:
+    src: "{{ item }}"
+    dest: /etc/nginx/conf.d/
+    owner: root
+    mode: 644
+  with_fileglob:
+    - ./nginx.conf.d/*.conf

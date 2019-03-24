@@ -1,3 +1,3 @@
 hosts.yml
-id_ed25519
-id_ed25519.pub
+/keys/**/*
+/nginx.conf.d/**/*

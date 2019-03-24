@@ -11,6 +11,9 @@ harden:
 composable:
 	ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook composable.yml
 
+http-gears:
+	ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook http-gears.yml
+
 reboot:
 	(ANSIBLE_HOST_KEY_CHECKING=false ansible worker -m reboot -a "reboot_timeout=0" --extra-vars "ansible_python_interpreter=\"/usr/bin/env python3\"") || true
 
@@ -19,3 +22,6 @@ lightsail-harden:
 
 fix-key-permission:
 	chmod 0600 ./keys/id_ed25519
+
+letsencrypt:
+	echo "\"make http-gears\", run \"certbot --nginx\" on the server, and examine nginx config file changes"

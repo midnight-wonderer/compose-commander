@@ -1,0 +1,4 @@
+---
+- name: Install Uncomplicated Firewall
+  apt:
+    name: "ufw"
