@@ -25,3 +25,6 @@ fix-key-permission:
 
 letsencrypt:
 	echo "\"make http-gears\", run \"certbot --nginx\" on the server, and examine nginx config file changes"
+
+cleanup:
+	rm ./*.retry

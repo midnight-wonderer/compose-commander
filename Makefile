@@ -1,9 +1,9 @@
 SHELL=/usr/bin/env bash
 
-.PHONY: ping ansible-shell
+.PHONY: ansible-shell cleanup
 
 ansible-shell:
 	(docker-compose run --rm ansible bash) || true
 
-ping:
-	ansible uninitialized -m ping -k -u root
+cleanup:
+	rm ./ansible/*.retry
