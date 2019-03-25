@@ -2,7 +2,7 @@
 - name: Create runner user
   user:
     name: runner
-    shell: /usr/bin/env bash
+    shell: /bin/bash
   register: runner_created
 
 - name: Setup ssh key for runner
@@ -10,3 +10,10 @@
   authorized_key:
     user=runner
     key="{{ lookup('file','./keys/id_ed25519.pub') }}"
+
+- name: Allow runner to access shell via remote
+  when: runner_created is success
+  user:
+    name: runner
+    groups: remote_shell
+    append: yes

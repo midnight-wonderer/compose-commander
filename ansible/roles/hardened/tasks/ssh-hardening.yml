@@ -12,3 +12,25 @@
     backrefs=yes
     line="\1no"
   register: ssh_password_disabled
+
+- name: Create "remote_shell" group
+  group:
+    name: remote_shell
+  register: remote_shell_created
+
+- name: Allow root to access shell via remote
+  when: remote_shell_created is success
+  user:
+    name: root
+    groups: remote_shell
+    append: yes
+
+- name: Allow group for remote ssh
+  when: remote_shell_created is success
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^AllowGroups'
+    line: "AllowGroups {{ user_groups | join(' ') }}"
+  vars:
+    user_groups:
+      - remote_shell
