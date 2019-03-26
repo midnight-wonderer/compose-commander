@@ -15,6 +15,9 @@ composable:
 http-gears:
 	ansible-playbook http-gears.yml
 
+http-config:
+	echo "TODO: check nginx config and reload"
+
 reboot:
 	(ansible worker -m reboot -a "reboot_timeout=0" --extra-vars "ansible_python_interpreter=\"/usr/bin/env python3\"") || true
 
