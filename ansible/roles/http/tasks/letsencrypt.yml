@@ -2,9 +2,9 @@
 # https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx
 - name: Add certbot repository
   apt_repository:
-    repo: "{{ item }}"
-  loop:
-    - ppa:certbot/certbot
+    repo: "ppa:certbot/certbot"
+    filename: certbot
+    state: present
   register: certbot_repository_readied
 
 - name: Install certbot for nginx

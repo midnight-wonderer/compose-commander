@@ -9,6 +9,7 @@
   when: nginx_key_readied is success
   apt_repository:
     repo: "deb http://nginx.org/packages/ubuntu/ {{ansible_distribution_release}} nginx"
+    filename: nginx
     state: present
   register: nginx_repository_readied
 
