@@ -24,7 +24,7 @@ reboot:
 update:
 	(ansible worker -m apt -a "name=* state=latest update_cache=yes" --extra-vars "ansible_python_interpreter=\"/usr/bin/env python3\"") || true
 
-lightsail-harden:
+aws-harden:
 	(ansible worker -m user -a "name=ubuntu state=absent remove=yes" --extra-vars "ansible_python_interpreter=\"/usr/bin/env python3\"") || true
 
 fix-key-permission:
