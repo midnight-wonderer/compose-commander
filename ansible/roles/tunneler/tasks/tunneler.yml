@@ -1,0 +1,34 @@
+---
+- name: Create bin directory for tunneling (tunneler)
+  file:
+    path: "~/tunnel/bin"
+    state: directory
+  become: yes
+  become_user: tunneler
+
+- name: Create bin directory for tunneling (root)
+  file:
+    path: "~/tunnel"
+    state: directory
+
+- name: Copy tunneling agent to bin
+  copy:
+    src: "bin/{{ item }}"
+    dest: "~/tunnel/bin/{{ item }}"
+  become: yes
+  become_user: tunneler
+  loop:
+     - shadowsocks2
+     - gost
+
+- name: Copy Makefile for tunneler
+  copy:
+    src: "tunneler.Makefile"
+    dest: "~/tunnel/Makefile"
+  become: yes
+  become_user: tunneler
+
+- name: Copy Makefile for root
+  copy:
+    src: "root.Makefile"
+    dest: "~/tunnel/Makefile"

@@ -1,3 +1,4 @@
 hosts.yml
 /keys/**/*
 /nginx.conf.d/**/*
+/bin/**/*

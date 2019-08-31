@@ -1,5 +1,8 @@
-SHELL=/usr/bin/env bash
+SHELL:=/usr/bin/env bash
 ANSIBLE_HOST_KEY_CHECKING:=false
+SOURCE_DIR=$(strip $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))))
+GOST_VERSION=2.8.1
+SHADOWSOCKS_VERSION=v0.0.11
 
 .PHONY: ping
 
@@ -35,3 +38,20 @@ letsencrypt:
 
 cleanup:
 	rm ./*.retry
+
+download-gost:
+	if [ ! -f "$(SOURCE_DIR)/bin/gost" ]; then \
+		URL="https://github.com/ginuerzh/gost/releases/download/v$(GOST_VERSION)/gost_$(GOST_VERSION)_linux_amd64.tar.gz" && \
+		(curl -s -L $$URL | tar -C "$(SOURCE_DIR)/bin" --strip-components 1 -xz) \
+	fi
+
+download-shadowsocks:
+	if [ ! -f "$(SOURCE_DIR)/bin/shadowsocks2" ]; then \
+		URL="https://github.com/shadowsocks/go-shadowsocks2/releases/download/$(SHADOWSOCKS_VERSION)/shadowsocks2-linux.gz" && \
+		((curl -s -L $$URL | gunzip -q) > "$(SOURCE_DIR)/bin/shadowsocks2") && \
+		(chmod +x "$(SOURCE_DIR)/bin/shadowsocks2") \
+	fi
+
+tunneler: download-gost download-shadowsocks
+	ansible-playbook tunneler.yml && \
+	echo "Don't forget to config variables in Makefile and add some cronjob"

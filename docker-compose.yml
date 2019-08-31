@@ -9,3 +9,5 @@ services:
       - "./config/hosts.yml:/home/runner/ansible/hosts.yml"
       - "./config/keys:/home/runner/ansible/keys"
       - "./config/nginx.conf.d:/home/runner/ansible/nginx.conf.d"
+      - "./config/bin:/home/runner/ansible/bin"
+      - "./config/bin:/home/runner/ansible/roles/tunneler/files/bin"
