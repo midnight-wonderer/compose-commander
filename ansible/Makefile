@@ -55,3 +55,7 @@ download-shadowsocks:
 tunneler: download-gost download-shadowsocks
 	ansible-playbook tunneler.yml && \
 	echo "Don't forget to config variables in Makefile and add some cronjob"
+
+tunnelee: download-gost download-shadowsocks
+	ansible-playbook tunnelee.yml && \
+	echo "Don't forget to config variables in Makefile and add some cronjob"
