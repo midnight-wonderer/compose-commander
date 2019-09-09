@@ -22,6 +22,10 @@
     - shadowsocks2
     - gost
 
+- name: Install Make
+  apt:
+    name: "make"
+
 - name: Copy Makefile for tunneler
   copy:
     src: 'tunneler.Makefile'
