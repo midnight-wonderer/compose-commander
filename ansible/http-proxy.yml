@@ -1,0 +1,8 @@
+---
+- name: configure proxy
+  hosts: worker
+  roles:
+    - http-proxy
+  strategy: free
+  vars:
+    ansible_python_interpreter: "/usr/bin/env python3"

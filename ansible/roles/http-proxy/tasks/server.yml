@@ -1,0 +1,5 @@
+---
+- name: add nginx server
+  include_role:
+    name: http
+    tasks_from: server

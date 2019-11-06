@@ -18,6 +18,9 @@ composable:
 http-gears:
 	ansible-playbook http-gears.yml
 
+http-proxy:
+	ansible-playbook http-proxy.yml
+
 http-config:
 	echo "TODO: check nginx config and reload"
 
