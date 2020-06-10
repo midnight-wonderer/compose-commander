@@ -33,3 +33,17 @@
   vars:
     user_groups:
       - remote_shell
+
+- name: Set KexAlgorithms
+  when: ssh_password_disabled is success
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^\s*#?\s*KexAlgorithms'
+    line: "KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256"
+
+- name: Set MACs
+  when: ssh_password_disabled is success
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^\s*#?\s*MACs\b'
+    line: "MACs umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512"
