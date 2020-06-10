@@ -1,8 +1,9 @@
-version: '3'
+version: '3.7'
 
 services:
   ansible:
     build: ./ansible
+    init: true
     volumes:
       - "./ansible/ssh-config:/home/runner/.ssh/config"
       - "./ansible:/home/runner/ansible"
