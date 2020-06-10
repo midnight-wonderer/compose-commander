@@ -15,6 +15,9 @@ harden:
 composable:
 	ansible-playbook composable.yml
 
+runner:
+	ansible-playbook runner.yml
+
 http-gears:
 	ansible-playbook http-gears.yml
 

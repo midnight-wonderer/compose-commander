@@ -1,0 +1,11 @@
+---
+- name: harden ssh
+  include_role:
+    name: hardened
+    tasks_from: ssh-hardening
+
+- name: create runner
+  include_role:
+    name: composable
+    tasks_from: user
+  register: tunneler_created
