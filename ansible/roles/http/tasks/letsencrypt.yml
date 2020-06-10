@@ -1,10 +1,8 @@
 ---
-# https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx
+# https://certbot.eff.org/lets-encrypt/ubuntufocal-nginx
 - name: Add certbot repository
-  apt_repository:
-    repo: "ppa:certbot/certbot"
-    filename: certbot
-    state: present
+  shell:
+    cmd: "add-apt-repository universe"
   register: certbot_repository_readied
 
 - name: Install certbot for nginx
@@ -16,4 +14,4 @@
     packages:
       - software-properties-common
       - certbot
-      - python-certbot-nginx
+      - python3-certbot-nginx
