@@ -1,8 +1,8 @@
 SHELL:=/usr/bin/env bash
 ANSIBLE_HOST_KEY_CHECKING:=false
 SOURCE_DIR=$(strip $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))))
-GOST_VERSION=2.8.1
-SHADOWSOCKS_VERSION=v0.0.11
+GOST_VERSION=2.11.1
+SHADOWSOCKS_VERSION=v0.1.0
 
 .PHONY: ping
 
@@ -47,8 +47,9 @@ cleanup:
 
 download-gost:
 	if [ ! -f "$(SOURCE_DIR)/bin/gost" ]; then \
-		URL="https://github.com/ginuerzh/gost/releases/download/v$(GOST_VERSION)/gost_$(GOST_VERSION)_linux_amd64.tar.gz" && \
-		(curl -s -L $$URL | tar -C "$(SOURCE_DIR)/bin" --strip-components 1 -xz) \
+		URL="https://github.com/ginuerzh/gost/releases/download/v$(GOST_VERSION)/gost-linux-amd64-$(GOST_VERSION).gz" && \
+		((curl -s -L $$URL | gunzip -q) > "$(SOURCE_DIR)/bin/gost") && \
+		(chmod +x "$(SOURCE_DIR)/bin/gost") \
 	fi
 
 download-shadowsocks:
