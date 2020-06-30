@@ -1,15 +1,17 @@
 ---
-- name: Create bin directory for tunneling (tunneler)
+- name: Create bin directory for tunneling
   file:
     path: '~/tunnel/bin'
     state: directory
   become: yes
   become_user: tunneler
 
-- name: Create bin directory for tunneling (root)
-  file:
-    path: '~/tunneler'
-    state: directory
+- name: Allow tunneler to control iptables
+  copy:
+    src: 'tunneler-sudoer.txt'
+    dest: '/etc/sudoers.d/tunneler'
+    mode: '0440'
+    force: no
 
 - name: Copy tunneling agent to bin
   copy:
@@ -33,9 +35,3 @@
     force: no
   become: yes
   become_user: tunneler
-
-- name: Copy Makefile for root
-  copy:
-    src: 'root.Makefile'
-    dest: '~/tunneler/Makefile'
-    force: no
