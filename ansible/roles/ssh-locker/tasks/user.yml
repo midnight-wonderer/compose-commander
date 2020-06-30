@@ -1,0 +1,24 @@
+---
+- name: harden ssh
+  include_role:
+    name: hardened
+    tasks_from: ssh-hardening
+
+- name: Create ssh-locker user
+  user:
+    name: ssh-locker
+    shell: /bin/bash
+  register: ssh_locker_created
+
+- name: Setup ssh key for ssh-locker
+  when: ssh_locker_created is success
+  authorized_key:
+    user=ssh-locker
+    key="{{ lookup('file','./keys/id_ed25519.pub') }}"
+
+- name: Allow ssh-locker to access shell via remote
+  when: ssh_locker_created is success
+  user:
+    name: ssh-locker
+    groups: remote_shell
+    append: yes

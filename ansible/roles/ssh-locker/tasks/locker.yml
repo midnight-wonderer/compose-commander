@@ -1,0 +1,30 @@
+---
+- name: Create directory for the locker
+  file:
+    path: '~/locker'
+    state: directory
+  become: yes
+  become_user: ssh-locker
+
+- name: Allow ssh-locker to access ufw
+  copy:
+    src: 'ssh-locker-sudoer.txt'
+    dest: '/etc/sudoers.d/ssh-locker'
+    mode: '0440'
+    force: no
+
+- name: Install Dependencies
+  apt:
+    name: "make"
+  loop:
+    - make
+    - curl
+    - ufw
+
+- name: Copy Makefile for ssh-locker
+  copy:
+    src: 'ssh-locker.Makefile'
+    dest: '~/locker/Makefile'
+    force: no
+  become: yes
+  become_user: ssh-locker

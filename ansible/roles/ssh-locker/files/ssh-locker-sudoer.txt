@@ -1,0 +1,1 @@
+ssh-locker	ALL=NOPASSWD:/usr/sbin/ufw

@@ -59,6 +59,10 @@ download-shadowsocks:
 		(chmod +x "$(SOURCE_DIR)/bin/shadowsocks2") \
 	fi
 
+ssh-locker:
+	ansible-playbook ssh-locker.yml && \
+	echo "Don't forget to config variables in Makefile and add some cronjob"
+
 tunneler: download-gost download-shadowsocks
 	ansible-playbook tunneler.yml && \
 	echo "Don't forget to config variables in Makefile and add some cronjob"
