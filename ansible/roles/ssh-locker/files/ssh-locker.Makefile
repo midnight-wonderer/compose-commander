@@ -1,13 +1,17 @@
 SHELL:=/usr/bin/env bash
-WHITELIST=https://www.cloudflare.com/ips-v4
+WHITELIST_SOURCE=https://www.cloudflare.com/ips-v4
+WHITELIST=$(shell \
+	curl --max-time 5 -ss $(WHITELIST_SOURCE) | \
+	grep -E "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+(\/[0-9]+)?$$" \
+)
 
 exec:
-	curl --max-time 5 -ss $(WHITELIST) | \
-	grep -E "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+(\/[0-9]+)?$$" | \
-	xargs -L 1 -I %CIDR% sudo ufw allow proto tcp from %CIDR% to any port 22 comment 'SSH Locker'
+	for CIDR in $(WHITELIST); do \
+		sudo ufw allow from $$CIDR to any port ssh comment 'SSH Locker'; \
+	done
 
 # Instructions
-# - edit the WHITELIST variable
+# - edit the WHITELIST_SOURCE variable
 # - setup UFW with the Allow All SSH rule
 # - setup crontab for this make
 # - wait for result
