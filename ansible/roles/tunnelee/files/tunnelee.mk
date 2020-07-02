@@ -3,7 +3,7 @@ SOURCE_DIR=$(strip $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))))
 PSK=$(shell cat $(SOURCE_DIR)/psk | xargs)
 SOCKS_SERVER=10.0.0.1
 
-.PHONY: redirect-socks redirect-shadowsocks
+.PHONY: nat redirect-socks redirect-shadowsocks
 
 redirect-socks:
 	$(SOURCE_DIR)/bin/gost -L=redirect://:12345 -F=socks://$(SOCKS_SERVER):1080

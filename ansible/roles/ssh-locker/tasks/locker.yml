@@ -23,7 +23,7 @@
 
 - name: Copy Makefile for ssh-locker
   copy:
-    src: 'ssh-locker.Makefile'
+    src: 'ssh-locker.mk'
     dest: '~/locker/Makefile'
     force: no
   become: yes

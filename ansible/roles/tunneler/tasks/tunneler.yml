@@ -30,7 +30,7 @@
 
 - name: Copy Makefile for tunneler
   copy:
-    src: 'tunneler.Makefile'
+    src: 'tunneler.mk'
     dest: '~/tunnel/Makefile'
     force: no
   become: yes
