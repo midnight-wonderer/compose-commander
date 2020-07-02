@@ -4,19 +4,28 @@ SOURCE_DIR=$(strip $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))))
 GOST_VERSION=2.11.1
 SHADOWSOCKS_VERSION=v0.1.0
 
-.PHONY: ping
+.PHONY: ping reboot update
 
 ping:
 	ansible uninitialized -m ping --extra-vars "ansible_python_interpreter=\"/usr/bin/env python3\""
 
+reboot:
+	(ansible worker -m reboot -a "reboot_timeout=0" --extra-vars "ansible_python_interpreter=\"/usr/bin/env python3\"") || true
+
+update:
+	(ansible worker -m apt -a "name=* state=latest update_cache=yes" --extra-vars "ansible_python_interpreter=\"/usr/bin/env python3\"") || true
+
+
+.PHONY: harden aws-harden
+
 harden:
 	ansible-playbook harden.yml
 
-composable:
-	ansible-playbook composable.yml
+aws-harden:
+	(ansible worker -m user -a "name=ubuntu state=absent remove=yes" --extra-vars "ansible_python_interpreter=\"/usr/bin/env python3\"") || true
 
-runner:
-	ansible-playbook runner.yml
+
+.PHONY: http-gears http-proxy http-config letsencrypt
 
 http-gears:
 	ansible-playbook http-gears.yml
@@ -27,23 +36,20 @@ http-proxy:
 http-config:
 	echo "TODO: check nginx config and reload"
 
-reboot:
-	(ansible worker -m reboot -a "reboot_timeout=0" --extra-vars "ansible_python_interpreter=\"/usr/bin/env python3\"") || true
+letsencrypt:
+	echo "\"make http-gears\", run \"sudo certbot --nginx\" on the server, and examine nginx config file changes"
 
-update:
-	(ansible worker -m apt -a "name=* state=latest update_cache=yes" --extra-vars "ansible_python_interpreter=\"/usr/bin/env python3\"") || true
 
-aws-harden:
-	(ansible worker -m user -a "name=ubuntu state=absent remove=yes" --extra-vars "ansible_python_interpreter=\"/usr/bin/env python3\"") || true
+.PHONY: fix-key-permission cleanup
 
 fix-key-permission:
 	chmod 0600 ./keys/id_ed25519 ./keys/*.pem
 
-letsencrypt:
-	echo "\"make http-gears\", run \"sudo certbot --nginx\" on the server, and examine nginx config file changes"
-
 cleanup:
 	rm ./*.retry
+
+
+.PHONY: download-gost download-shadowsocks
 
 download-gost:
 	if [ ! -f "$(SOURCE_DIR)/bin/gost" ]; then \
@@ -58,6 +64,15 @@ download-shadowsocks:
 		((curl -s -L $$URL | gunzip -q) > "$(SOURCE_DIR)/bin/shadowsocks2") && \
 		(chmod +x "$(SOURCE_DIR)/bin/shadowsocks2") \
 	fi
+
+
+.PHONY: runner composable ssh-locker tunneler tunnelee
+
+runner:
+	ansible-playbook runner.yml
+
+composable:
+	ansible-playbook composable.yml
 
 ssh-locker:
 	ansible-playbook ssh-locker.yml && \

@@ -5,6 +5,8 @@ WHITELIST=$(shell \
 	grep -E "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+(\/[0-9]+)?$$" \
 )
 
+.PHONY: exec
+
 exec:
 	for CIDR in $(WHITELIST); do \
 		sudo ufw allow from $$CIDR to any port ssh comment 'SSH Locker'; \
