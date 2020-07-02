@@ -1,1 +1,1 @@
-tunneler	ALL=NOPASSWD: /sbin/iptables
+tunneler	ALL=NOPASSWD:/sbin/iptables
